@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サクッとわかる！戸籍の読み方＆種類 超入門ガイド</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                        mincho: ['Shippori Mincho', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 戸籍用紙風の背景質感 */
+        .koseki-bg {
+            background-color: #fbf9f3;
+            background-image: radial-gradient(#e2ddd0 0.8px, transparent 0.8px);
+            background-size: 14px 14px;
+        }
+        /* バツ印（除籍）表現 */
+        .batsu-overlay {
+            position: relative;
+        }
+        .batsu-overlay::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.5);
+            color: #ef4444;
+            font-weight: 900;
+            opacity: 0.35;
+            pointer-events: none;
+            font-size: 3rem;
+        }
+        /* 印鑑風バッジ */
+        .hanko {
+            border: 2px solid #dc2626;
+            color: #dc2626;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-block;
+            transform: rotate(-10deg);
+        }
+        /* パルス演出 */
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-subtle {
+            animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans leading-relaxed selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- ナビゲーションバー -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 bg-brand-500 text-slate-900 rounded-xl flex items-center justify-center font-black text-xl shadow">戸</span>
+                <div>
+                    <span class="font-black text-lg tracking-tight block leading-none">戸籍解読マスター</span>
+                    <span class="text-[10px] text-brand-400 font-bold tracking-wider">超直感ガイド & デモ</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-bold text-slate-300">
+                <a href="#types" class="hover:text-brand-400 transition">1. 戸籍の3タイプ</a>
+                <a href="#demo-section" class="hover:text-brand-400 transition text-brand-400">2. 体感デモ</a>
+                <a href="#sokan-demo" class="hover:text-brand-400 transition">3. 相関図変換</a>
+                <a href="#dictionary" class="hover:text-brand-400 transition">4. 爆速辞書</a>
+            </nav>
+            <a href="#demo-section" class="bg-brand-500 hover:bg-brand-600 text-slate-900 font-black text-xs md:text-sm px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-play"></i> デモを体験
+            </a>
+        </div>
+    </header>
+
+    <!-- ヒーローセクション -->
+    <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20 px-4 border-b border-slate-700 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-flex items-center gap-2 bg-brand-500/20 border border-brand-500/40 text-brand-300 font-bold text-xs px-3.5 py-1.5 rounded-full mb-6">
+                <i class="fa-solid fa-bolt text-amber-400"></i> 専門知識ゼロでも一瞬で理解できる！
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black leading-tight mb-6 tracking-tight">
+                難解な「戸籍」が<br class="hidden md:block">
+                <span class="text-brand-400 underline decoration-wavy decoration-brand-500/50">バカみたいにスラスラ読める</span>ようになるWebサイト
+            </h1>
+            <p class="text-base md:text-xl text-slate-300 max-w-2xl mx-auto mb-8">
+                「明治の原戸籍？」「除籍って何？」<br>
+                文字ばかりで意味不明な戸籍も、<strong>点線枠をクリックするだけ</strong>で構造がスッキリ頭に入ります！
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-3 text-xs md:text-sm font-bold">
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-check text-brand-400"></i> 3大タイプの見分け方
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-hand-pointer text-amber-400"></i> インタラクティブ解読デモ
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-diagram-project text-blue-400"></i> 相関図への自動可視化
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: 戸籍の3大種類 -->
+    <section id="types" class="py-16 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full">基礎知識</span>
+            <h2 class="text-2xl md:text-4xl font-black text-slate-900 mt-2 mb-3">
+                1. 戸籍のタイプはたったの「3種類」だけ！
+            </h2>
+            <p class="text-slate-600">名前がたくさんあって複雑に見えますが、分類すればこの3つしかありません。</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- タイプ1 -->
+            <div class="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm hover:border-brand-500 transition relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-700 font-black text-xl rounded-xl flex items-center justify-center">現</div>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">最新データ</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">① 現在戸籍（全事項証明）</h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        「いま生きている人の最新情報」が入った戸籍。パソコン文字（横書き・カラー印刷）で書かれており一番読みやすいです。
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs text-slate-500">
+                    <strong class="text-slate-800 block mb-1">例えるなら：</strong>
+                    「スマホで現在プレイ中の最新セーブデータ」
+                </div>
+            </div>
+
+            <!-- タイプ2 -->
+            <div class="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm hover:border-amber-500 transition relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-700 font-black text-xl rounded-xl flex items-center justify-center">原</div>
+                        <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">過去の旧様式</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">② 改製原戸籍（はらこせき）</h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        法律や制度が変わって「新しい様式にお引越しする前の古い戸籍」。<strong>手書きの縦書き</strong>が多く、相続調査の主役になります！
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs text-slate-500">
+                    <strong class="text-slate-800 block mb-1">例えるなら：</strong>
+                    「昔使っていたガラケーの思い出アルバム」
+                </div>
+            </div>
+
+            <!-- タイプ3 -->
+            <div class="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm hover:border-rose-500 transition relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-rose-100 text-rose-700 font-black text-xl rounded-xl flex items-center justify-center">除</div>
+                        <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">全員抜けきった</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">③ 除籍謄本（じょせきとうほん）</h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        死亡・結婚・転籍などで、その戸籍に入っていた<strong>全員がいなくなって「空っぽ」</strong>になった状態の戸籍です。
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs text-slate-500">
+                    <strong class="text-slate-800 block mb-1">例えるなら：</strong>
+                    「全員が引っ越した後の空き家」
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: メイン機能「解読インタラクティブデモ」 -->
+    <section id="demo-section" class="py-16 bg-slate-900 text-white px-4">
+        <div class="max-w-5xl mx-auto">
+            
+            <div class="text-center mb-10">
+                <span class="bg-brand-500/20 text-brand-300 border border-brand-500/40 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+                    インタラクティブ機能
+                </span>
+                <h2 class="text-2xl md:text-4xl font-black mt-3 mb-2">
+                    2. 体感！「戸籍解読」インタラクティブデモ
+                </h2>
+                <p class="text-slate-400 text-sm md:text-base">
+                    下のサンプル戸籍の<span class="text-amber-300 font-bold underline">点線枠（①〜④）をタップ</span>すると、右側に解読解説が表示されます！
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- 左側：サンプル戸籍（クリック可能） -->
+                <div class="lg:col-span-7 bg-amber-50 rounded-2xl p-4 md:p-6 text-slate-900 shadow-2xl relative select-none">
+                    
+                    <div class="border-4 border-slate-800 p-4 font-mincho koseki-bg rounded-lg relative">
+                        <!-- 印鑑風装飾 -->
+                        <div class="absolute top-3 right-3 hanko">昭和30年改製</div>
+                        
+                        <div class="text-center border-b-2 border-slate-800 pb-2 mb-4">
+                            <span class="text-[11px] font-sans font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded mr-1">昭和改製原戸籍（手書き再現）</span>
+                            <h3 class="text-2xl font-black tracking-widest inline-block text-slate-900">戸　籍　謄　本</h3>
+                        </div>
+
+                        <!-- 枠①：本籍・筆頭者 -->
+                        <div onclick="showExplanation('honseki')" id="btn-honseki" 
+                             class="demo-btn cursor-pointer border-2 border-dashed border-amber-600 bg-amber-200/60 hover:bg-amber-300/80 p-3 rounded mb-3 transition relative group">
+                            <span class="absolute -top-2.5 left-2 bg-amber-700 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow">① 本籍地・筆頭者</span>
+                            <div class="text-xs text-slate-700">本籍：東京都千代田区麹町一丁目1番地</div>
+                            <div class="text-base font-bold mt-0.5">筆頭者：山田 太郎</div>
+                        </div>
+
+                        <!-- 枠②：夫（死亡・バツ印） -->
+                        <div onclick="showExplanation('husband')" id="btn-husband" 
+                             class="demo-btn batsu-overlay cursor-pointer border-2 border-dashed border-red-500 bg-red-100/60 hover:bg-red-200/80 p-3 rounded mb-3 transition relative">
+                            <span class="absolute -top-2.5 left-2 bg-red-600 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow">② 夫（死亡による除籍）</span>
+                            <div class="flex justify-between font-bold text-sm mb-1 border-b border-slate-300 pb-1">
+                                <span>【夫】 山田 太郎</span>
+                                <span class="text-red-600 font-sans font-black">【除籍】</span>
+                            </div>
+                            <div class="text-xs">生年月日：昭和25年4月1日出生</div>
+                            <div class="text-xs text-red-700 font-bold mt-1">【死亡】令和5年10月10日 死亡届出（※名前にバツ印）</div>
+                        </div>
+
+                        <!-- 枠③：妻（入籍・婚姻） -->
+                        <div onclick="showExplanation('wife')" id="btn-wife" 
+                             class="demo-btn cursor-pointer border-2 border-dashed border-blue-500 bg-blue-100/60 hover:bg-blue-200/80 p-3 rounded mb-3 transition relative">
+                            <span class="absolute -top-2.5 left-2 bg-blue-600 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow">③ 妻（婚姻記録）</span>
+                            <div class="flex justify-between font-bold text-sm mb-1 border-b border-slate-300 pb-1">
+                                <span>【妻】 山田 花子（旧姓：鈴木）</span>
+                            </div>
+                            <div class="text-xs">生年月日：昭和28年8月15日出生</div>
+                            <div class="text-xs text-slate-700 mt-1">婚姻日：昭和50年5月5日 鈴木一郎二女 花子と婚姻</div>
+                        </div>
+
+                        <!-- 枠④：従前戸籍（激重要） -->
+                        <div onclick="showExplanation('previous')" id="btn-previous" 
+                             class="demo-btn cursor-pointer border-2 border-dashed border-emerald-600 bg-emerald-100/80 hover:bg-emerald-200 p-3 rounded transition relative shadow-sm">
+                            <span class="absolute -top-2.5 left-2 bg-emerald-700 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow animate-subtle">④ 【激重要】従前戸籍</span>
+                            <div class="font-bold text-xs text-emerald-900">
+                                【従前戸籍】神奈川県横浜市中区本町二丁目5番地 鈴木次郎戸籍から入籍
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 右側：リアルタイム解説パネル -->
+                <div class="lg:col-span-5 bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-2xl min-h-[420px] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span id="exp-badge" class="bg-brand-500 text-slate-900 text-xs font-black px-3 py-1 rounded-full">
+                                ① 本籍地・筆頭者
+                            </span>
+                            <span class="text-slate-400 text-xs font-bold">解説ウィンドウ</span>
+                        </div>
+                        
+                        <h3 id="exp-title" class="text-2xl font-black text-white mb-3">
+                            本籍地と筆頭者ってなに？
+                        </h3>
+                        
+                        <div id="exp-body" class="text-slate-300 text-sm leading-relaxed space-y-3">
+                            <!-- JSで動的に書き換わります -->
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between text-xs text-slate-400">
+                        <span>💡 他の場所をクリックして解説を切替</span>
+                        <i class="fa-solid fa-lightbulb text-amber-400 text-lg"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: 相関図への変換デモ -->
+    <section id="sokan-demo" class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full">実務連動</span>
+            <h2 class="text-2xl md:text-4xl font-black text-slate-900 mt-2 mb-3">
+                3. 戸籍から「相続関係図（相関図）」への変換
+            </h2>
+            <p class="text-slate-600">読み解いた戸籍の情報は、Webサイト上でこのように分かりやすい図解として可視化できます！</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 md:p-8 border-2 border-slate-200 shadow-sm grid md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sitemap text-brand-600"></i>
+                    相談者に伝わる視覚デザイン
+                </h3>
+                <p class="text-sm text-slate-600 mb-4">
+                    専門用語ばかりの文章では、相談者は「自分が相続人なのかどうか」すら分かりません。
+                    戸籍の読解知識があれば、複雑な親族関係もスマホで見やすいインタラクティブ図解に変換できます。
+                </p>
+                <ul class="space-y-2 text-xs md:text-sm text-slate-700 font-bold">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-500"></i> 代襲相続・数次相続のパターン図解</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-500"></i> スマホ画面に最適化されたレスポンシブ表示</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-500"></i> ご案内用PDFや印刷資料の作成にも対応</li>
+                </ul>
+            </div>
+
+            <!-- 模擬相関図カード -->
+            <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-inner flex flex-col items-center">
+                <span class="text-xs text-slate-400 mb-4 font-mono">【Web掲載用 相関図モジュール例】</span>
+                
+                <!-- 被相続人 -->
+                <div class="bg-slate-800 border border-slate-600 px-4 py-2 rounded-xl text-center w-48 mb-3 shadow">
+                    <span class="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-bold">被相続人（亡くなった方）</span>
+                    <div class="font-bold text-sm text-white">山田 太郎</div>
+                </div>
+
+                <div class="w-0.5 h-6 bg-brand-500 mb-3"></div>
+
+                <!-- 相続人たち -->
+                <div class="flex gap-4">
+                    <div class="bg-brand-500/20 border border-brand-500/40 px-3 py-2 rounded-xl text-center w-32">
+                        <span class="text-[10px] text-brand-300 font-bold">相続人（配偶者）</span>
+                        <div class="font-bold text-xs text-white">山田 花子</div>
+                    </div>
+                    <div class="bg-brand-500/20 border border-brand-500/40 px-3 py-2 rounded-xl text-center w-32">
+                        <span class="text-[10px] text-brand-300 font-bold">相続人（長男）</span>
+                        <div class="font-bold text-xs text-white">山田 一郎</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: 爆速用語辞典 -->
+    <section id="dictionary" class="py-16 bg-slate-200/60 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-2">
+                    4. 爆速解決！戸籍用語の「超直訳」辞典
+                </h2>
+                <p class="text-slate-600 text-sm">難解な漢字だらけの用語を、日常言葉に翻訳しました。</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm">
+                    <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded">本籍地</span>
+                    <h4 class="font-black text-slate-900 text-base mt-2 mb-1">＝「戸籍が置いてある場所」</h4>
+                    <p class="text-xs text-slate-500">※ 今住んでいる住所（住民票の場所）と違っていても良いのが特徴です。</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm">
+                    <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded">筆頭者</span>
+                    <h4 class="font-black text-slate-900 text-base mt-2 mb-1">＝「その戸籍グループのリーダー」</h4>
+                    <p class="text-xs text-slate-500">※ 結婚した時に「苗字が変わらなかった側の人」が筆頭者になります。</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm">
+                    <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded">除籍（×印）</span>
+                    <h4 class="font-black text-slate-900 text-base mt-2 mb-1">＝「結婚や死亡でグループから抜けた」</h4>
+                    <p class="text-xs text-slate-500">※ 昔の紙の戸籍では、抜けた人の名前の上に大きな「✕印」が手書きされました。</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm">
+                    <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded">従前戸籍</span>
+                    <h4 class="font-black text-slate-900 text-base mt-2 mb-1">＝「1つ前の戸籍の住所」</h4>
+                    <p class="text-xs text-slate-500">※ 【超重要】過去の戸籍へさかのぼり調査をする時の「ヒント」になる住所です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-4 text-center border-t border-slate-800 text-sm">
+        <div class="max-w-4xl mx-auto space-y-3">
+            <p class="font-black text-white text-base">戸籍解読マスターガイド (Interactive Demo)</p>
+            <p class="text-xs text-slate-500 max-w-xl mx-auto leading-relaxed">
+                ※ 当Webアプリは戸籍解読の基本原則をわかりやすく伝えるデモサイトです。<br>
+                実際の相続手続きにおける戸籍取得や権利主張に関しては、行政書士・司法書士等の士業事務所様にご相談ください。
+            </p>
+            <p class="text-xs text-slate-600">&copy; Koseki Master Demo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- インタラクティブ解読スクリプト -->
+    <script>
+        const demoData = {
+            honseki: {
+                badge: '① 本籍地・筆頭者',
+                badgeColor: 'bg-amber-500 text-slate-900',
+                title: '本籍地 ＆ 筆頭者（ひっとうしゃ）',
+                body: `
+                    <p><strong>【本籍地】</strong>とは、戸籍が保管されている場所（市役所）のことです。実は日本国内なら皇居やテーマパークなど、どこに置いても自由です。</p>
+                    <p class="mt-2"><strong>【筆頭者】</strong>とは、その戸籍の見出し（リーダー）のこと。結婚した際に苗字を変更しなかった側の人が筆頭者になります（亡くなっても筆頭者の名前は変わりません）。</p>
+                    <div class="bg-slate-700/60 p-3 rounded-xl border border-slate-600 mt-3 text-xs text-amber-300">
+                        <strong>💡 解読のコツ：</strong><br>
+                        戸籍を取る時は「住所」ではなく「本籍地と筆頭者」を市役所に伝える必要があります！
+                    </div>
+                `
+            },
+            husband: {
+                badge: '② 夫（死亡による除籍）',
+                badgeColor: 'bg-red-500 text-white',
+                title: '除籍（バツ印）と死亡記載',
+                body: `
+                    <p>人が死亡すると、遺族が死亡届を出した時点で戸籍に<strong>「令和5年10月10日死亡」</strong>といった記録が残ります。</p>
+                    <p class="mt-2">それと同時に、この戸籍のメンバーから外れるため<strong>「除籍」</strong>の扱いになり、古い手書き戸籍の場合は名前の上に大きく<strong>「✕印」</strong>が引かれます。</p>
+                    <div class="bg-slate-700/60 p-3 rounded-xl border border-slate-600 mt-3 text-xs text-red-300">
+                        <strong>💡 相続のポイント：</strong><br>
+                        「この人が亡くなったこと」および「死亡時の相続人が誰か」を証明する基本部分です。
+                    </div>
+                `
+            },
+            wife: {
+                badge: '③ 妻（婚姻・入籍）',
+                badgeColor: 'bg-blue-500 text-white',
+                title: '婚姻（結婚）と旧姓の記録',
+                body: `
+                    <p>誰といつ結婚したか、そして<strong>結婚前の旧姓や実家の両親の名前</strong>（鈴木一郎の二女、など）が詳しく記載されます。</p>
+                    <p class="mt-2">ここを見ることで、「結婚する前にどこの実家の戸籍に入っていたか」が特定できます。</p>
+                    <div class="bg-slate-700/60 p-3 rounded-xl border border-slate-600 mt-3 text-xs text-blue-300">
+                        <strong>💡 実務のコツ：</strong><br>
+                        奥様の過去の戸籍を調べる時は、ここにかかれている実家の情報が手がかりになります。
+                    </div>
+                `
+            },
+            previous: {
+                badge: '④ 【最重要】従前戸籍',
+                badgeColor: 'bg-emerald-500 text-slate-900',
+                title: '【過去へ遡る鍵】従前戸籍（じゅうぜんこせき）',
+                body: `
+                    <p class="text-emerald-300 font-bold">★ 相続人調査で最も大切な場所です！</p>
+                    <p class="mt-1">ここには<strong>「この戸籍ができる直前に、どこに本籍があったか」</strong>という前の住所が書かれています。</p>
+                    <p class="mt-2">例えば「横浜市中区本町…から入籍」と書かれていれば、次は横浜市中区役所に旧戸籍（改製原戸籍や除籍）を請求しに行けば良いことがわかります。</p>
+                    <div class="bg-emerald-950/80 p-3 rounded-xl border border-emerald-500/40 mt-3 text-xs text-emerald-200">
+                        <strong>🚀 さかのぼり手順：</strong><br>
+                        死亡時の戸籍 ➔ ④の従前戸籍の住所へ請求 ➔ さらにその前の従前戸籍へ請求…を出生（生まれた時）までループします！
+                    </div>
+                `
+            }
+        };
+
+        function showExplanation(key) {
+            const data = demoData[key];
+            if (!data) return;
+
+            document.querySelectorAll('.demo-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-brand-400', 'bg-amber-300/90');
+            });
+            const targetBtn = document.getElementById('btn-' + key);
+            if (targetBtn) {
+                targetBtn.classList.add('ring-4', 'ring-brand-400', 'bg-amber-300/90');
+            }
+
+            const badge = document.getElementById('exp-badge');
+            badge.className = `text-xs font-black px-3 py-1 rounded-full ${data.badgeColor}`;
+            badge.innerText = data.badge;
+
+            document.getElementById('exp-title').innerText = data.title;
+            document.getElementById('exp-body').innerHTML = data.body;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showExplanation('previous');
+        });
+    </script>
+</body>
+</html>
