@@ -1,0 +1,2514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戸籍解読マスター｜初心者にもやさしい戸籍の読み方</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b'
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                        mincho: ['Shippori Mincho', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .koseki-paper {
+            background-color: #fdfaf4;
+            background-image:
+                radial-gradient(#e5e0d0 0.8px, transparent 0.8px);
+            background-size: 14px 14px;
+        }
+
+        .tab-btn {
+            padding: 0.625rem 1.15rem;
+            border-radius: 0.85rem;
+            font-size: 0.75rem;
+            font-weight: 800;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #475569;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        @media (min-width: 640px) {
+            .tab-btn {
+                font-size: 0.85rem;
+            }
+        }
+
+        .tab-btn:hover {
+            border-color: #10b981;
+            color: #059669;
+        }
+
+        .tab-btn.active {
+            background-color: #10b981;
+            color: #0f172a;
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .interactive-box {
+            cursor: pointer;
+            border: 2px dashed #94a3b8;
+            background-color: rgba(255, 255, 255, 0.75);
+            transition: all 0.2s ease;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+
+        .interactive-box:hover {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.12);
+        }
+
+        .interactive-box.selected {
+            border-color: #059669;
+            background-color: rgba(16, 185, 129, 0.22);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+        }
+
+        .batsu-line {
+            position: relative;
+        }
+
+        .batsu-line::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(2);
+            color: #ef4444;
+            opacity: 0.35;
+            font-weight: 900;
+            pointer-events: none;
+            font-size: 3rem;
+        }
+
+        .hanko-stamp {
+            border: 2px solid #dc2626;
+            color: #dc2626;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-block;
+            transform: rotate(-12deg);
+        }
+
+        .font-mincho {
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .fuhyo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .fuhyo-table th,
+        .fuhyo-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 8px;
+        }
+
+        .fuhyo-table th {
+            background-color: #f1f5f9;
+            font-weight: bold;
+        }
+
+        #document-canvas {
+            transition: opacity 0.25s ease;
+        }
+
+        /* ==========================================================
+           初心者向け説明カード
+        ========================================================== */
+
+        .beginner-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .beginner-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .easy-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 900;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            margin-bottom: 0.6rem;
+        }
+
+        .difference-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .difference-table th,
+        .difference-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+            font-size: 0.8rem;
+        }
+
+        .difference-table th {
+            background: #f8fafc;
+            font-weight: 900;
+        }
+
+        @media (max-width: 639px) {
+            .difference-table {
+                font-size: 0.75rem;
+            }
+
+            .difference-table th,
+            .difference-table td {
+                padding: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed selection:bg-brand-100">
+
+
+<!-- ==========================================================
+     HEADER
+========================================================== -->
+
+<header class="sticky top-0 z-50 bg-navy-900 text-white shadow-xl">
+
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between h-20 sm:h-24">
+
+        <div class="flex items-center gap-4">
+
+            <span class="w-12 h-12 bg-brand-500 text-slate-900 rounded-2xl flex items-center justify-center font-black text-2xl shrink-0 shadow-lg">
+                見
+            </span>
+
+            <div class="flex flex-col">
+
+                <span class="font-black text-xl sm:text-2xl tracking-wide leading-none">
+                    戸籍解読マスター
+                </span>
+
+                <span class="text-[10px] sm:text-xs text-brand-400 font-bold tracking-widest mt-2 uppercase">
+                    Complete Practical Guide
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="hidden md:flex items-center gap-3">
+
+            <span class="text-[10px] bg-white/10 px-3 py-1 rounded-full text-slate-400 font-bold">
+                初心者にもやさしく解説
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==========================================================
+     HERO
+========================================================== -->
+
+<section class="bg-navy-900 text-white pt-16 pb-24 px-6 border-b-4 border-brand-500 relative overflow-hidden">
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-brand-300 font-bold text-xs px-4 py-2 rounded-full mb-10 shadow-inner">
+
+            <i class="fa-solid fa-scroll text-amber-400"></i>
+
+            家督相続・隠居から、転籍・附票まで
+
+        </span>
+
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight mb-8 tracking-tighter">
+
+            戸籍の「わかりにくい言葉」を
+
+            <br class="hidden md:block">
+
+            <span class="text-brand-400 underline decoration-wavy decoration-brand-500/50">
+                初心者にもわかりやすく
+            </span>
+
+            <br class="hidden md:block">
+
+            解説します。
+
+        </h1>
+
+
+        <p class="text-base sm:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+
+            昔の戸籍に出てくる家督相続や隠居から、
+
+            <br>
+
+            転籍・分籍・養子・認知・附票まで。
+
+            <br>
+
+            相続調査で迷いやすいポイントを、
+            タップしながら確認できます。
+
+        </p>
+
+
+        <div class="flex flex-wrap justify-center gap-4">
+
+            <div class="bg-slate-800/80 px-6 py-4 rounded-2xl border border-slate-700 flex items-center gap-3 text-sm font-bold shadow-xl">
+
+                <i class="fa-solid fa-users-gear text-amber-400 text-lg"></i>
+
+                家督相続・隠居
+
+            </div>
+
+
+            <div class="bg-slate-800/80 px-6 py-4 rounded-2xl border border-slate-700 flex items-center gap-3 text-sm font-bold shadow-xl">
+
+                <i class="fa-solid fa-link text-emerald-400 text-lg"></i>
+
+                養子・認知・分籍
+
+            </div>
+
+
+            <div class="bg-slate-800/80 px-6 py-4 rounded-2xl border border-slate-700 flex items-center gap-3 text-sm font-bold shadow-xl">
+
+                <i class="fa-solid fa-map-location-dot text-blue-400 text-lg"></i>
+
+                転籍・附票
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     このサイトの見方
+========================================================== -->
+
+<section class="py-14 px-6 bg-white border-b border-slate-200">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="text-center mb-10">
+
+            <span class="easy-label">
+                まずここだけ覚えればOK
+            </span>
+
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+                戸籍と附票は何が違う？
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-3">
+                相続の書類で迷いやすいところです。
+            </p>
+
+        </div>
+
+
+        <div class="grid md:grid-cols-2 gap-5">
+
+            <div class="beginner-card bg-brand-50 border border-brand-100 rounded-2xl p-6">
+
+                <div class="flex items-center gap-3 mb-4">
+
+                    <div class="w-11 h-11 rounded-xl bg-brand-500 text-slate-900 flex items-center justify-center font-black">
+                        戸
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-black text-lg text-brand-900">
+                            戸籍
+                        </h3>
+
+                        <p class="text-xs text-slate-500">
+                            家族関係を確認する
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p class="font-bold text-slate-900 mb-2">
+                    「この人は誰と家族なの？」
+                </p>
+
+                <p class="text-sm text-slate-600">
+                    親子関係、婚姻、養子、認知など、
+                    人の身分関係を確認するための記録です。
+                </p>
+
+            </div>
+
+
+            <div class="beginner-card bg-blue-50 border border-blue-100 rounded-2xl p-6">
+
+                <div class="flex items-center gap-3 mb-4">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-500 text-white flex items-center justify-center font-black">
+                        住
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-black text-lg text-blue-900">
+                            戸籍の附票
+                        </h3>
+
+                        <p class="text-xs text-slate-500">
+                            住所の履歴を確認する
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p class="font-bold text-slate-900 mb-2">
+                    「この人はどこに住んでいたの？」
+                </p>
+
+                <p class="text-sm text-slate-600">
+                    戸籍に記載されている人について、
+                    住所の履歴を確認するための記録です。
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-5">
+
+            <div class="flex gap-3">
+
+                <i class="fa-solid fa-lightbulb text-amber-500 mt-1"></i>
+
+                <div class="text-sm">
+
+                    <strong class="text-amber-900">
+                        覚え方
+                    </strong>
+
+                    <p class="text-amber-950 mt-1">
+                        <strong>戸籍 ＝ 家族関係</strong>
+                        ／
+                        <strong>附票 ＝ 住所の履歴</strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     用語のやさしい解説
+========================================================== -->
+
+<section class="py-20 px-6 max-w-7xl mx-auto">
+
+    <div class="text-center mb-16">
+
+        <span class="easy-label">
+            はじめに
+        </span>
+
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4 tracking-tighter">
+            やさしくわかる！戸籍の用語
+        </h2>
+
+        <p class="text-slate-600 text-sm sm:text-base">
+            戸籍を読むときに知っておきたい言葉を、できるだけやさしく説明します。
+        </p>
+
+    </div>
+
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+
+        <!-- 筆頭者 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-brand-600 font-black text-lg mb-2">
+                筆頭者
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                ひっとうしゃ
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                戸籍の最初に記載される人
+            </div>
+
+            <p class="text-xs text-slate-500">
+                戸籍を特定するときの基準になる人です。
+                「戸籍の代表者」と考えるとイメージしやすいです。
+            </p>
+
+        </div>
+
+
+        <!-- 隠居 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-amber-600 font-black text-lg mb-2">
+                隠居
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                いんきょ
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                昔の制度での「生前の引退」
+            </div>
+
+            <p class="text-xs text-slate-500">
+                家の代表者が、生きているうちに跡継ぎへ
+                家督を引き継ぐことです。
+            </p>
+
+        </div>
+
+
+        <!-- 家督相続 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-rose-600 font-black text-lg mb-2">
+                家督相続
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                かとくそうぞく
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                昔の相続制度
+            </div>
+
+            <p class="text-xs text-slate-500">
+                旧民法の時代に使われていた制度です。
+                現在の相続制度とは異なります。
+            </p>
+
+        </div>
+
+
+        <!-- 附票 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-blue-600 font-black text-lg mb-2">
+                戸籍の附票
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                こせきのふひょう
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                住所の履歴
+            </div>
+
+            <p class="text-xs text-slate-500">
+                戸籍に記載されている人の住所の履歴を
+                確認するための記録です。
+            </p>
+
+        </div>
+
+
+        <!-- 分籍 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-emerald-600 font-black text-lg mb-2">
+                分籍
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                ぶんせき
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                戸籍を分けること
+            </div>
+
+            <p class="text-xs text-slate-500">
+                一定の場合に、親の戸籍から抜けて
+                自分を筆頭者とする戸籍を作ることです。
+            </p>
+
+        </div>
+
+
+        <!-- 転籍 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-indigo-600 font-black text-lg mb-2">
+                転籍
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                てんせき
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                本籍地を移すこと
+            </div>
+
+            <p class="text-xs text-slate-500">
+                本籍を別の場所へ変更することです。
+                転籍前の戸籍が調査の手がかりになる場合があります。
+            </p>
+
+        </div>
+
+
+        <!-- 改製原戸籍 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-violet-600 font-black text-lg mb-2">
+                改製原戸籍
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                かいせいげんこせき
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                新しい戸籍になる前の戸籍
+            </div>
+
+            <p class="text-xs text-slate-500">
+                戸籍の様式が変更された際に、
+                作り替えられる前の戸籍です。
+            </p>
+
+        </div>
+
+
+        <!-- 除籍 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-red-600 font-black text-lg mb-2">
+                除籍
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                じょせき
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                戸籍から全員がいなくなった状態
+            </div>
+
+            <p class="text-xs text-slate-500">
+                死亡や婚姻などによって戸籍に記載される人が
+                全員いなくなると、その戸籍は除籍になります。
+            </p>
+
+        </div>
+
+
+        <!-- 養子 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-emerald-600 font-black text-lg mb-2">
+                養子縁組
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                ようしえんぐみ
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                法律上の親子関係をつくること
+            </div>
+
+            <p class="text-xs text-slate-500">
+                戸籍に養子縁組の記載がある場合、
+                相続人を確認するときにも注意が必要です。
+            </p>
+
+        </div>
+
+
+        <!-- 認知 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-orange-600 font-black text-lg mb-2">
+                認知
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                にんち
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                父が子を認めること
+            </div>
+
+            <p class="text-xs text-slate-500">
+                認知によって法律上の親子関係が生じます。
+                相続人調査では見落とさないことが重要です。
+            </p>
+
+        </div>
+
+
+        <!-- 婚姻 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-pink-600 font-black text-lg mb-2">
+                婚姻
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                こんいん
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                結婚に関する記録
+            </div>
+
+            <p class="text-xs text-slate-500">
+                配偶者との関係を確認する手がかりです。
+                前婚の有無などを確認することもあります。
+            </p>
+
+        </div>
+
+
+        <!-- 離婚 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-rose-600 font-black text-lg mb-2">
+                離婚
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                りこん
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                婚姻関係が解消された記録
+            </div>
+
+            <p class="text-xs text-slate-500">
+                前婚や子どもの有無などを確認する
+                手がかりになることがあります。
+            </p>
+
+        </div>
+
+
+        <!-- 被相続人 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-slate-700 font-black text-lg mb-2">
+                被相続人
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                ひそうぞくにん
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                亡くなった方
+            </div>
+
+            <p class="text-xs text-slate-500">
+                相続される財産などを残した方を指します。
+            </p>
+
+        </div>
+
+
+        <!-- 相続人 -->
+
+        <div class="beginner-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+
+            <div class="text-brand-600 font-black text-lg mb-2">
+                相続人
+            </div>
+
+            <div class="text-xs text-slate-400 mb-3">
+                そうぞくにん
+            </div>
+
+            <div class="text-slate-900 font-bold mb-3">
+                財産などを引き継ぐ人
+            </div>
+
+            <p class="text-xs text-slate-500">
+                誰が相続人になるのかは、
+                家族関係などによって決まります。
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     書類の違い
+========================================================== -->
+
+<section class="py-20 px-6 bg-slate-100">
+
+    <div class="max-w-6xl mx-auto">
+
+        <div class="text-center mb-12">
+
+            <span class="easy-label">
+                ここが重要
+            </span>
+
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900">
+                「戸籍・除籍・改製原戸籍・附票」の違い
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-4">
+                名前が似ているので、最初は混乱して当然です。
+            </p>
+
+        </div>
+
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+
+            <div class="overflow-x-auto">
+
+                <table class="difference-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                書類
+                            </th>
+
+                            <th>
+                                何が分かる？
+                            </th>
+
+                            <th>
+                                かんたんにいうと
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td class="font-black text-brand-700">
+                                戸籍
+                            </td>
+
+                            <td>
+                                親子・婚姻などの身分関係
+                            </td>
+
+                            <td>
+                                <strong>家族関係の記録</strong>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="font-black text-red-600">
+                                除籍
+                            </td>
+
+                            <td>
+                                戸籍にいた人が全員いなくなった戸籍
+                            </td>
+
+                            <td>
+                                <strong>役目を終えた戸籍</strong>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="font-black text-violet-700">
+                                改製原戸籍
+                            </td>
+
+                            <td>
+                                戸籍の様式が変わる前の記録
+                            </td>
+
+                            <td>
+                                <strong>新しい戸籍になる前の戸籍</strong>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="font-black text-blue-700">
+                                戸籍の附票
+                            </td>
+
+                            <td>
+                                住所の履歴
+                            </td>
+
+                            <td>
+                                <strong>住所の履歴書</strong>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-6 bg-white border border-slate-200 rounded-2xl p-6">
+
+            <div class="flex gap-4">
+
+                <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <div>
+
+                    <h3 class="font-black text-slate-900 mb-2">
+                        「除籍＝死亡した人の戸籍」ではありません
+                    </h3>
+
+                    <p class="text-sm text-slate-600">
+                        除籍は、戸籍に記載されている人が全員いなくなった状態を指します。
+                        そのため、除籍になった理由は死亡だけとは限りません。
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     戸籍の附票を詳しく
+========================================================== -->
+
+<section class="py-20 px-6 bg-white">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="text-center mb-12">
+
+            <span class="easy-label">
+                初心者向け
+            </span>
+
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900">
+                戸籍の附票って何？
+            </h2>
+
+            <p class="text-slate-500 text-sm mt-4">
+                「附票」という名前だけでは、何の書類なのか分かりにくいですよね。
+            </p>
+
+        </div>
+
+
+        <div class="grid md:grid-cols-3 gap-5">
+
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+
+                <div class="text-blue-600 text-3xl mb-4">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+
+                <h3 class="font-black text-lg mb-3">
+                    何を見る？
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    戸籍に記載されている人の
+                    <strong>住所の履歴</strong>を確認します。
+                </p>
+
+            </div>
+
+
+            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
+
+                <div class="text-emerald-600 text-3xl mb-4">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+
+                <h3 class="font-black text-lg mb-3">
+                    何に役立つ？
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    戸籍上の人物と住所を
+                    結びつけて確認する手がかりになります。
+                </p>
+
+            </div>
+
+
+            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-6">
+
+                <div class="text-amber-600 text-3xl mb-4">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                <h3 class="font-black text-lg mb-3">
+                    覚え方
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    <strong>戸籍＝家族関係</strong><br>
+                    <strong>附票＝住所の履歴</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-8 bg-slate-50 rounded-2xl border border-slate-200 p-6">
+
+            <h3 class="font-black text-slate-900 mb-4">
+                こんなイメージです
+            </h3>
+
+
+            <div class="overflow-x-auto">
+
+                <table class="fuhyo-table bg-white">
+
+                    <thead>
+
+                        <tr>
+                            <th>時期</th>
+                            <th>住所</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>平成20年</td>
+                            <td>東京都新宿区</td>
+                        </tr>
+
+                        <tr>
+                            <td>平成25年</td>
+                            <td>神奈川県横浜市</td>
+                        </tr>
+
+                        <tr>
+                            <td>令和2年</td>
+                            <td>北海道札幌市</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <p class="text-xs text-slate-500 mt-4">
+                ※上記は説明用のイメージです。
+                実際の記載内容や証明できる範囲は、自治体や戸籍の状況などによって異なります。
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     解読シミュレーター
+========================================================== -->
+
+<section id="viewer-section"
+         class="py-20 bg-slate-900 text-white px-6 border-y-4 border-brand-500">
+
+    <div class="max-w-7xl mx-auto">
+
+
+        <div class="text-center mb-12">
+
+            <h2 class="text-3xl sm:text-4xl font-black mb-4 tracking-tighter">
+                戸籍の「記載」を読んでみよう
+            </h2>
+
+            <p class="text-slate-400 text-sm sm:text-base">
+                タブを切り替えて、点線の枠をタップすると詳しい説明が表示されます。
+            </p>
+
+        </div>
+
+
+        <div class="max-w-4xl mx-auto mb-8 bg-amber-50 text-amber-950 border border-amber-200 rounded-2xl p-5 text-sm leading-relaxed">
+
+            <strong>相続人調査の基本：</strong>
+
+            1枚の戸籍だけで判断せず、
+            婚姻・離婚・養子・認知・分籍・転籍・改製などの記載を手がかりに、
+            前後の戸籍をつないで確認するイメージです。
+
+            <br><br>
+
+            ※このページに表示される戸籍は学習用の見本です。
+
+        </div>
+
+
+        <!-- ==================================================
+             Tabs
+        ================================================== -->
+
+        <div class="flex flex-wrap justify-center gap-2 mb-10">
+
+            <button onclick="switchDoc('hara')"
+                    id="tab-hara"
+                    class="tab-btn active">
+                原戸籍
+            </button>
+
+            <button onclick="switchDoc('tenseki')"
+                    id="tab-tenseki"
+                    class="tab-btn">
+                転籍
+            </button>
+
+            <button onclick="switchDoc('tokushu')"
+                    id="tab-tokushu"
+                    class="tab-btn">
+                養子・認知
+            </button>
+
+            <button onclick="switchDoc('bunseki')"
+                    id="tab-bunseki"
+                    class="tab-btn">
+                分籍
+            </button>
+
+            <button onclick="switchDoc('kekkon')"
+                    id="tab-kekkon"
+                    class="tab-btn">
+                婚姻・離婚
+            </button>
+
+            <button onclick="switchDoc('fuhyo')"
+                    id="tab-fuhyo"
+                    class="tab-btn">
+                戸籍の附票
+            </button>
+
+            <button onclick="switchDoc('joseki')"
+                    id="tab-joseki"
+                    class="tab-btn">
+                除籍
+            </button>
+
+            <button onclick="switchDoc('kaisei')"
+                    id="tab-kaisei"
+                    class="tab-btn">
+                改製
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             Simulator Grid
+        ================================================== -->
+
+        <div class="grid lg:grid-cols-12 gap-10 items-start">
+
+
+            <!-- Left -->
+
+            <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border-4 border-slate-800 shadow-2xl relative min-h-[600px] overflow-hidden">
+
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+
+                    <span id="doc-badge-label"
+                          class="bg-brand-50 text-brand-800 font-black text-xs px-3 py-1.5 rounded-md border border-brand-200">
+                        明治・昭和の旧戸籍
+                    </span>
+
+                    <span class="text-[10px] text-slate-400 font-mono tracking-widest uppercase">
+                        Tap dots to decode
+                    </span>
+
+                </div>
+
+                <div id="document-canvas"
+                     class="h-full text-slate-900 transition-opacity duration-300">
+                </div>
+
+            </div>
+
+
+            <!-- Right -->
+
+            <div class="lg:col-span-5 bg-navy-800 rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-700 min-h-[600px] flex flex-col justify-between">
+
+                <div>
+
+                    <div class="flex items-center gap-2 mb-8">
+
+                        <span id="exp-badge"
+                              class="bg-amber-400 text-navy-900 text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                            Point
+                        </span>
+
+                        <span id="doc-type-label"
+                              class="text-slate-400 text-xs font-bold tracking-widest">
+                            改製原戸籍
+                        </span>
+
+                    </div>
+
+
+                    <h3 id="exp-title"
+                        class="text-2xl sm:text-3xl font-black mb-6 text-white leading-tight">
+                        枠線を選択してください
+                    </h3>
+
+
+                    <div id="exp-body"
+                         class="text-slate-300 text-base sm:text-lg leading-relaxed space-y-6">
+
+                        左側のサンプルの点線枠をタップすると、
+                        戸籍に書かれている内容をやさしく解説します。
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-12 pt-8 border-t border-slate-700 flex justify-between items-center text-xs text-slate-500">
+
+                    <span class="font-bold flex items-center gap-2">
+
+                        <i class="fa-solid fa-check-circle text-brand-500"></i>
+
+                        戸籍の読み方を確認
+
+                    </span>
+
+                    <i class="fa-solid fa-file-invoice text-brand-400 text-2xl"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     相続用語
+========================================================== -->
+
+<section class="py-20 px-6">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="text-center mb-12">
+
+            <span class="easy-label">
+                相続でよく出てくる言葉
+            </span>
+
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900">
+                これも知っておくと安心
+            </h2>
+
+        </div>
+
+
+        <div class="grid sm:grid-cols-2 gap-5">
+
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h3 class="font-black text-lg text-slate-900 mb-2">
+                    相続
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    亡くなった方が残した財産などを、
+                    相続人が引き継ぐことです。
+                </p>
+
+            </div>
+
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h3 class="font-black text-lg text-slate-900 mb-2">
+                    法定相続人
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    民法で定められた、
+                    相続する権利を持つ人のことです。
+                </p>
+
+            </div>
+
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h3 class="font-black text-lg text-slate-900 mb-2">
+                    遺産分割協議
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    相続人同士で、
+                    「誰がどの財産を引き継ぐか」を話し合うことです。
+                </p>
+
+            </div>
+
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h3 class="font-black text-lg text-slate-900 mb-2">
+                    相続登記
+                </h3>
+
+                <p class="text-sm text-slate-600">
+                    相続した土地や建物について、
+                    不動産の名義を相続した人へ変更する手続きです。
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     戸籍を見るときの注意
+========================================================== -->
+
+<section class="py-20 px-6 bg-slate-100">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="text-center mb-12">
+
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900">
+                戸籍を見るときのポイント
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-3">
+                分からない言葉が出てきても、あわてなくて大丈夫です。
+            </p>
+
+        </div>
+
+
+        <div class="space-y-4">
+
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200">
+
+                <div class="flex gap-4">
+
+                    <span class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-black shrink-0">
+                        1
+                    </span>
+
+                    <div>
+
+                        <h3 class="font-black text-slate-900 mb-2">
+                            古い言葉が出てきても驚かない
+                        </h3>
+
+                        <p class="text-sm text-slate-600">
+                            「家督相続」「隠居」「改製原戸籍」など、
+                            現在の日常生活ではあまり使わない言葉が出てくることがあります。
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200">
+
+                <div class="flex gap-4">
+
+                    <span class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-black shrink-0">
+                        2
+                    </span>
+
+                    <div>
+
+                        <h3 class="font-black text-slate-900 mb-2">
+                            1枚だけで判断しない
+                        </h3>
+
+                        <p class="text-sm text-slate-600">
+                            戸籍は、婚姻・離婚・転籍・分籍・改製などによって
+                            前の戸籍や次の戸籍につながっていることがあります。
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200">
+
+                <div class="flex gap-4">
+
+                    <span class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-black shrink-0">
+                        3
+                    </span>
+
+                    <div>
+
+                        <h3 class="font-black text-slate-900 mb-2">
+                            「附票」は戸籍とは役割が違う
+                        </h3>
+
+                        <p class="text-sm text-slate-600">
+                            戸籍は主に家族関係を確認するもの、
+                            戸籍の附票は住所の履歴を確認するものです。
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200">
+
+                <div class="flex gap-4">
+
+                    <span class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-black shrink-0">
+                        4
+                    </span>
+
+                    <div>
+
+                        <h3 class="font-black text-slate-900 mb-2">
+                            家督相続は現在の制度ではない
+                        </h3>
+
+                        <p class="text-sm text-slate-600">
+                            古い戸籍に「家督相続」と書かれていても、
+                            現在の相続制度として家督相続を行うという意味ではありません。
+                            昔の戸籍を読み解くための知識として確認します。
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     最後のメッセージ
+========================================================== -->
+
+<section class="py-20 px-6 bg-brand-50">
+
+    <div class="max-w-3xl mx-auto text-center">
+
+        <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-brand-500 text-slate-900 flex items-center justify-center text-2xl shadow-lg">
+
+            <i class="fa-solid fa-heart"></i>
+
+        </div>
+
+
+        <h2 class="text-2xl sm:text-3xl font-black text-brand-900 mb-5">
+            分からない言葉が出てきても大丈夫
+        </h2>
+
+
+        <p class="text-sm sm:text-base text-slate-600 leading-loose">
+
+            相続の手続きでは、
+            普段あまり使わない言葉がたくさん出てきます。
+
+            <br>
+
+            まずは「この言葉は何を意味しているのか」を確認して、
+            一つずつ整理していきましょう。
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     Footer
+========================================================== -->
+
+<footer class="bg-navy-900 text-slate-600 py-12 px-6 text-center border-t border-slate-800">
+
+    <p class="font-black text-white text-lg mb-2 tracking-tight">
+        戸籍・附票解読 Webデモ
+    </p>
+
+    <p class="text-xs max-w-md mx-auto leading-relaxed">
+
+        複雑な公的書類を、
+        初心者にもわかりやすく読み解くための学習用デモです。
+
+    </p>
+
+    <p class="text-[9px] font-mono tracking-widest pt-6 uppercase">
+        © 2026 戸籍解読マスター
+    </p>
+
+</footer>
+
+
+
+<!-- ==========================================================
+     JavaScript
+========================================================== -->
+
+<script>
+
+/*
+============================================================
+戸籍解読マスター
+
+説明部分を初心者向けに整理したバージョン
+
+・原戸籍
+・転籍
+・養子
+・認知
+・分籍
+・婚姻
+・離婚
+・戸籍の附票
+・除籍
+・改製
+
+をタブで確認できます。
+============================================================
+*/
+
+
+const docData = {
+
+
+    /* ======================================================
+       1. 原戸籍
+    ====================================================== */
+
+    hara: {
+
+        badgeLabel: '明治・大正・昭和の古い戸籍を読む',
+
+        typeLabel: '改製原戸籍（かいせいげんこせき）',
+
+        canvas: `
+
+            <div class="koseki-paper border-4 border-slate-800 p-6 rounded-lg font-mincho h-full relative text-slate-900">
+
+                <div class="absolute top-4 right-4 hanko-stamp">
+                    昭和初期式
+                </div>
+
+                <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
+
+                    <h4 class="text-2xl font-black tracking-[0.4em]">
+                        戸籍原簿抄本
+                    </h4>
+
+                </div>
+
+
+                <div class="border-b border-slate-300 pb-3 mb-5">
+
+                    <div class="text-[10px] text-slate-500 italic leading-none mb-1">
+                        戸主
+                    </div>
+
+                    <div class="text-lg font-bold">
+                        山田 次郎
+                    </div>
+
+                </div>
+
+
+                <div class="space-y-4">
+
+
+                    <div onclick="selectPart('hara','katoku')"
+                         id="part-katoku"
+                         class="interactive-box">
+
+                        <span class="absolute -top-3 left-2 bg-slate-900 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow">
+                            ① 戸主となった理由
+                        </span>
+
+                        <div class="text-[11px] leading-relaxed font-bold">
+
+                            昭和15年5月10日
+                            前戸主山田太郎
+                            <strong>隠居</strong>
+                            ニ付家督相続
+
+                        </div>
+
+                    </div>
+
+
+                    <div onclick="selectPart('hara','inkyo-person')"
+                         id="part-inkyo-person"
+                         class="interactive-box batsu-line border-rose-400 bg-rose-50/20">
+
+                        <span class="absolute -top-3 left-2 bg-rose-700 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow">
+                            ② 隠居した人
+                        </span>
+
+                        <div class="font-bold text-sm text-red-900">
+                            【家族】山田 太郎（隠居者）
+                        </div>
+
+                        <div class="text-[10px]">
+                            明治20年4月1日生 / 昭和25年死亡
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            katoku: {
+
+                badge: '① 家督相続（かとくそうぞく）',
+
+                title: '昔の制度で「家の代表者」が変わった',
+
+                body:
+                    '家督相続は、昔の民法で使われていた相続制度です。現在の相続制度とは異なります。この見本では、前の戸主が隠居したため、次の戸主へ家督が引き継がれたことを表しています。'
+
+            },
+
+
+            'inkyo-person': {
+
+                badge: '② 隠居（いんきょ）',
+
+                title: '昔の制度で「生前に引退」した',
+
+                body:
+                    '隠居とは、昔の制度で、家の代表者が生きているうちに跡継ぎへ交代することです。古い戸籍に出てくることがあります。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       2. 転籍
+    ====================================================== */
+
+    tenseki: {
+
+        badgeLabel: '本籍地を別の場所へ移した記録',
+
+        typeLabel: '転籍（てんせき）',
+
+        canvas: `
+
+            <div class="border-2 border-blue-700 p-6 rounded bg-blue-50/40 font-sans text-slate-900 h-full">
+
+                <div class="text-center border-b-2 border-blue-800 pb-3 mb-6 font-bold text-base">
+                    戸籍事項（見本）
+                </div>
+
+
+                <div onclick="selectPart('tenseki','move')"
+                     id="part-move"
+                     class="interactive-box border-blue-400 bg-white">
+
+                    <span class="absolute -top-2.5 left-2 bg-blue-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ① 転籍
+                    </span>
+
+                    <div class="font-bold">
+                        本籍を東京都新宿区から北海道札幌市へ転籍
+                    </div>
+
+                    <div class="text-[10px] text-blue-900 mt-1">
+                        令和2年4月1日 転籍届出
+                    </div>
+
+                </div>
+
+
+                <div onclick="selectPart('tenseki','new-koseki')"
+                     id="part-new-koseki"
+                     class="interactive-box mt-5 border-indigo-400 bg-indigo-50/40">
+
+                    <span class="absolute -top-2.5 left-2 bg-indigo-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ② 転籍後
+                    </span>
+
+                    <div class="font-bold">
+                        転籍後の本籍地で戸籍を確認
+                    </div>
+
+                    <div class="text-[10px]">
+                        前の戸籍とのつながりを確認する入口になります。
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            move: {
+
+                badge: '① 転籍（てんせき）',
+
+                title: '簡単にいうと「本籍地のお引っ越し」',
+
+                body:
+                    '転籍とは、本籍地を別の場所へ移すことです。住所を引っ越すこととは別のものです。相続調査では、転籍前の戸籍を確認する必要がある場合があります。'
+
+            },
+
+
+            'new-koseki': {
+
+                badge: '② 転籍後の戸籍',
+
+                title: '前の戸籍につながる手がかり',
+
+                body:
+                    '転籍すると、新しい本籍地で戸籍が作られます。現在の戸籍だけでは過去の情報が分からない場合があるため、必要に応じて前の戸籍をたどります。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       3. 養子・認知
+    ====================================================== */
+
+    tokushu: {
+
+        badgeLabel: '相続人を確認するときに注意したい記載',
+
+        typeLabel: '養子縁組・認知',
+
+        canvas: `
+
+            <div class="border-2 border-slate-700 p-6 rounded bg-white font-sans text-xs h-full relative text-slate-900">
+
+                <div class="text-center border-b-2 border-slate-800 pb-3 mb-6 font-bold text-base">
+                    戸籍事項・身分事項（見本）
+                </div>
+
+
+                <div class="space-y-4">
+
+
+                    <div onclick="selectPart('tokushu','yoshi')"
+                         id="part-yoshi"
+                         class="interactive-box border-emerald-400 bg-emerald-50/40">
+
+                        <span class="absolute -top-2.5 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                            ① 養子縁組
+                        </span>
+
+                        <div class="font-bold">
+                            【名】山田 健太（養子）
+                        </div>
+
+                        <div class="text-[10px] text-emerald-900 mt-1">
+                            平成10年3月15日 山田太郎と養子縁組届出
+                        </div>
+
+                    </div>
+
+
+                    <div onclick="selectPart('tokushu','ninchi')"
+                         id="part-ninchi"
+                         class="interactive-box border-amber-400 bg-amber-50/40">
+
+                        <span class="absolute -top-2.5 left-2 bg-amber-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                            ② 認知
+                        </span>
+
+                        <div class="font-bold">
+                            【名】佐藤 一郎（認知）
+                        </div>
+
+                        <div class="text-[10px] text-amber-900 mt-1">
+                            平成18年6月20日 山田太郎より認知届出
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            yoshi: {
+
+                badge: '① 養子縁組（ようしえんぐみ）',
+
+                title: '法律上の親子関係をつくる',
+
+                body:
+                    '養子縁組によって法律上の親子関係が生じます。相続人を確認するときには、実の親子関係だけでなく、養子縁組の記載も確認することが大切です。'
+
+            },
+
+
+            ninchi: {
+
+                badge: '② 認知（にんち）',
+
+                title: '父が子を認めるための制度',
+
+                body:
+                    '認知は、父が子を自分の子として認める制度です。相続人調査では、認知の記載がないか確認することが重要です。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       4. 分籍
+    ====================================================== */
+
+    bunseki: {
+
+        badgeLabel: '親の戸籍から別の戸籍へ移った記録',
+
+        typeLabel: '分籍（ぶんせき）',
+
+        canvas: `
+
+            <div class="border-2 border-emerald-700 p-6 rounded bg-emerald-50/30 font-sans text-slate-900 h-full">
+
+                <div class="text-center border-b-2 border-emerald-800 pb-3 mb-6 font-bold text-base">
+                    戸籍事項（見本）
+                </div>
+
+
+                <div onclick="selectPart('bunseki','leave')"
+                     id="part-leave"
+                     class="interactive-box border-emerald-400 bg-white">
+
+                    <span class="absolute -top-2.5 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ① 分籍
+                    </span>
+
+                    <div class="font-bold">
+                        山田 健太　分籍
+                    </div>
+
+                    <div class="text-[10px] text-emerald-900 mt-1">
+                        平成20年8月1日 分籍届出
+                    </div>
+
+                </div>
+
+
+                <div onclick="selectPart('bunseki','trace')"
+                     id="part-trace"
+                     class="interactive-box mt-5 border-teal-400 bg-teal-50">
+
+                    <span class="absolute -top-2.5 left-2 bg-teal-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ② 調査ポイント
+                    </span>
+
+                    <div class="font-bold">
+                        分籍後は別の戸籍へ
+                    </div>
+
+                    <div class="text-[10px]">
+                        親の戸籍だけを見て終わらないようにします。
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            leave: {
+
+                badge: '① 分籍（ぶんせき）',
+
+                title: '簡単にいうと「戸籍を分ける」',
+
+                body:
+                    '分籍とは、一定の場合に、親の戸籍から抜けて自分を筆頭者とする戸籍を作ることです。住所を引っ越すこととは違います。'
+
+            },
+
+
+            trace: {
+
+                badge: '② 分籍後の確認',
+
+                title: '別の戸籍につながることがある',
+
+                body:
+                    '分籍すると元の戸籍とは別の戸籍になります。相続人調査などで過去から現在までの戸籍を確認するときは、分籍後の戸籍も確認する必要があります。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       5. 婚姻・離婚
+    ====================================================== */
+
+    kekkon: {
+
+        badgeLabel: '配偶者や前婚を確認するときのポイント',
+
+        typeLabel: '婚姻・離婚',
+
+        canvas: `
+
+            <div class="border-2 border-rose-700 p-6 rounded bg-rose-50/30 font-sans text-slate-900 h-full">
+
+                <div class="text-center border-b-2 border-rose-800 pb-3 mb-6 font-bold text-base">
+                    身分事項（見本）
+                </div>
+
+
+                <div onclick="selectPart('kekkon','marriage')"
+                     id="part-marriage"
+                     class="interactive-box border-rose-400 bg-white">
+
+                    <span class="absolute -top-2.5 left-2 bg-rose-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ① 婚姻
+                    </span>
+
+                    <div class="font-bold">
+                        山田 太郎　婚姻　佐藤 花子
+                    </div>
+
+                    <div class="text-[10px] text-rose-900 mt-1">
+                        平成5年5月10日 婚姻届出
+                    </div>
+
+                </div>
+
+
+                <div onclick="selectPart('kekkon','divorce')"
+                     id="part-divorce"
+                     class="interactive-box mt-5 border-orange-400 bg-orange-50">
+
+                    <span class="absolute -top-2.5 left-2 bg-orange-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ② 離婚
+                    </span>
+
+                    <div class="font-bold">
+                        山田 太郎　離婚　佐藤 花子
+                    </div>
+
+                    <div class="text-[10px] text-orange-900 mt-1">
+                        平成15年9月1日 協議離婚届出
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            marriage: {
+
+                badge: '① 婚姻（こんいん）',
+
+                title: '配偶者との関係を確認する記載',
+
+                body:
+                    '婚姻の記載から、配偶者との関係を確認できます。相続人調査では、現在の婚姻だけでなく、過去の婚姻についても確認することがあります。'
+
+            },
+
+
+            divorce: {
+
+                badge: '② 離婚（りこん）',
+
+                title: '前の婚姻関係を確認する手がかり',
+
+                body:
+                    '離婚の記載は、前の婚姻関係を確認する手がかりになります。子どもの有無など、相続人を確認するうえで重要な情報につながる場合があります。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       6. 戸籍の附票
+    ====================================================== */
+
+    fuhyo: {
+
+        badgeLabel: '住所の履歴を確認するための記録',
+
+        typeLabel: '戸籍の附票（こせきのふひょう）',
+
+        canvas: `
+
+            <div class="bg-amber-50/40 border-2 border-amber-200 p-6 rounded h-full font-sans text-slate-900">
+
+                <h4 class="text-center font-bold border-b-2 border-amber-600 pb-3 mb-6">
+                    戸籍の附票の写し（見本）
+                </h4>
+
+
+                <div onclick="selectPart('fuhyo','fuhyo-list')"
+                     id="part-fuhyo-list"
+                     class="interactive-box border-amber-400 bg-white">
+
+                    <span class="absolute -top-2.5 left-2 bg-amber-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        住所履歴
+                    </span>
+
+
+                    <table class="fuhyo-table mt-1">
+
+                        <thead>
+
+                            <tr class="bg-amber-100">
+
+                                <th>
+                                    記録日
+                                </th>
+
+                                <th>
+                                    住所
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+                                <td>H20</td>
+                                <td>東京都新宿区…</td>
+                            </tr>
+
+                            <tr>
+                                <td>H25</td>
+                                <td>神奈川県横浜市…</td>
+                            </tr>
+
+                            <tr class="bg-amber-50 font-bold">
+                                <td>R2</td>
+                                <td>北海道札幌市…</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            'fuhyo-list': {
+
+                badge: '戸籍の附票',
+
+                title: '簡単にいうと「住所の履歴」',
+
+                body:
+                    '戸籍の附票は、その戸籍に記載されている人の住所の履歴を確認するためのものです。戸籍そのものが主に家族関係を確認するのに対して、附票は住所の履歴を確認します。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       7. 除籍
+    ====================================================== */
+
+    joseki: {
+
+        badgeLabel: '戸籍に記載されている人が全員いなくなった状態',
+
+        typeLabel: '除籍（じょせき）',
+
+        canvas: `
+
+            <div class="border-2 border-red-800 p-6 rounded bg-red-50/20 font-sans text-xs relative h-full text-slate-900">
+
+                <div class="absolute top-2 left-2 border-2 border-red-600 text-red-600 font-black px-2 py-0.5 rounded text-sm transform -rotate-6">
+                    除 籍
+                </div>
+
+
+                <div class="text-center border-b-2 border-slate-800 pb-3 mb-6 pt-4 text-base font-bold">
+                    除 籍 謄 本
+                </div>
+
+
+                <div onclick="selectPart('joseki','removed')"
+                     id="part-removed"
+                     class="interactive-box batsu-line border-red-400 bg-white">
+
+                    <div class="font-bold text-red-700 text-sm">
+                        【名】山田 次郎（除籍）
+                    </div>
+
+                    <div class="text-[10px] mt-1">
+                        令和5年10月10日 死亡届出により除籍
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            removed: {
+
+                badge: '除籍（じょせき）',
+
+                title: '簡単にいうと「全員がいなくなった戸籍」',
+
+                body:
+                    '戸籍に記載されている人が全員いなくなると、その戸籍は除籍になります。死亡だけでなく、婚姻などによって戸籍から全員がいなくなった場合もあります。'
+
+            }
+
+        }
+
+    },
+
+
+    /* ======================================================
+       8. 改製
+    ====================================================== */
+
+    kaisei: {
+
+        badgeLabel: '戸籍の様式が変わったときの前後関係',
+
+        typeLabel: '改製・改製原戸籍',
+
+        canvas: `
+
+            <div class="border-2 border-violet-700 p-6 rounded bg-violet-50/30 font-sans text-slate-900 h-full">
+
+                <div class="text-center border-b-2 border-violet-800 pb-3 mb-6 font-bold text-base">
+                    改製原戸籍・現在戸籍（見本）
+                </div>
+
+
+                <div onclick="selectPart('kaisei','old')"
+                     id="part-old"
+                     class="interactive-box border-violet-400 bg-white">
+
+                    <span class="absolute -top-2.5 left-2 bg-violet-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ① 改製前
+                    </span>
+
+                    <div class="font-bold">
+                        改製原戸籍　旧様式の戸籍
+                    </div>
+
+                    <div class="text-[10px] text-violet-900 mt-1">
+                        改製前の記載を確認する。
+                    </div>
+
+                </div>
+
+
+                <div onclick="selectPart('kaisei','new')"
+                     id="part-new"
+                     class="interactive-box mt-5 border-purple-400 bg-purple-50">
+
+                    <span class="absolute -top-2.5 left-2 bg-purple-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                        ② 改製後
+                    </span>
+
+                    <div class="font-bold">
+                        現在戸籍　新しい様式
+                    </div>
+
+                    <div class="text-[10px]">
+                        新しい戸籍だけでは過去の情報がすべて見えないことがあります。
+                    </div>
+
+                </div>
+
+            </div>
+
+        `,
+
+
+        parts: {
+
+            old: {
+
+                badge: '① 改製原戸籍',
+
+                title: '新しい戸籍になる前の戸籍',
+
+                body:
+                    '戸籍の様式が変更されると、新しい様式の戸籍が作られます。その前の戸籍が改製原戸籍です。相続人調査では、現在の戸籍だけでは分からない過去の情報を確認するために使うことがあります。'
+
+            },
+
+
+            new: {
+
+                badge: '② 改製後の戸籍',
+
+                title: '新しい様式で作られた戸籍',
+
+                body:
+                    '改製によって新しい戸籍が作られます。ただし、新しい戸籍に過去の情報がすべてそのまま載っているとは限りません。そのため、必要に応じて改製原戸籍までさかのぼって確認します。'
+
+            }
+
+        }
+
+    }
+
+};
+
+
+
+/* ==========================================================
+   ドキュメント切り替え
+========================================================== */
+
+function switchDoc(key) {
+
+    const data = docData[key];
+
+    if (!data) {
+        return;
+    }
+
+
+    document
+        .querySelectorAll('.tab-btn')
+        .forEach(button => {
+            button.classList.remove('active');
+        });
+
+
+    const activeTab =
+        document.getElementById('tab-' + key);
+
+
+    if (activeTab) {
+        activeTab.classList.add('active');
+    }
+
+
+    document.getElementById('doc-badge-label').innerText =
+        data.badgeLabel;
+
+
+    document.getElementById('doc-type-label').innerText =
+        data.typeLabel;
+
+
+    const canvas =
+        document.getElementById('document-canvas');
+
+
+    canvas.style.opacity = '0';
+
+
+    setTimeout(() => {
+
+        canvas.innerHTML = data.canvas;
+
+        canvas.style.opacity = '1';
+
+
+        const firstPart =
+            Object.keys(data.parts)[0];
+
+
+        selectPart(key, firstPart);
+
+    }, 120);
+
+}
+
+
+
+/* ==========================================================
+   項目選択
+========================================================== */
+
+function selectPart(docKey, partKey) {
+
+    const part =
+        docData[docKey]?.parts[partKey];
+
+
+    if (!part) {
+        return;
+    }
+
+
+    document
+        .querySelectorAll('.interactive-box')
+        .forEach(box => {
+            box.classList.remove('selected');
+        });
+
+
+    const selectedBox =
+        document.getElementById('part-' + partKey);
+
+
+    if (selectedBox) {
+        selectedBox.classList.add('selected');
+    }
+
+
+    document.getElementById('exp-badge').innerText =
+        part.badge;
+
+
+    document.getElementById('exp-title').innerText =
+        part.title;
+
+
+    document.getElementById('exp-body').innerHTML =
+        '<p>' + part.body + '</p>';
+
+}
+
+
+
+/* ==========================================================
+   初期表示
+========================================================== */
+
+window.addEventListener('DOMContentLoaded', () => {
+
+    switchDoc('hara');
+
+});
+
+</script>
+
+</body>
+</html>
