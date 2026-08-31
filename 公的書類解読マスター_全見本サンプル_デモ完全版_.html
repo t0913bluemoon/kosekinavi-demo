@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相続人調査・戸籍解読 完全攻略マスターガイド</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' },
+                        navy: { 800: '#1e293b', 900: '#0f172a' }
+                    },
+                    fontFamily: { sans: ['Noto Sans JP', 'sans-serif'], mincho: ['Shippori Mincho', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 和紙・古い紙の質感 */
+        .koseki-paper {
+            background-color: #fcfaf2;
+            background-image: radial-gradient(#e5e0d0 0.8px, transparent 0.8px);
+            background-size: 14px 14px;
+        }
+        /* バツ印（除籍）表現 */
+        .batsu-overlay { position: relative; }
+        .batsu-overlay::after {
+            content: '✕'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(2);
+            color: #ef4444; opacity: 0.35; font-weight: 900; pointer-events: none; font-size: 3rem;
+        }
+        /* 印鑑風バッジ */
+        .hanko-stamp {
+            border: 2px solid #dc2626; color: #dc2626; border-radius: 50%;
+            padding: 2px 6px; font-size: 10px; font-weight: bold;
+            transform: rotate(-12deg); display: inline-block;
+        }
+        /* 住所の附票用リスト */
+        .sample-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        .sample-table th, .sample-table td { border: 1px solid #cbd5e1; padding: 6px 8px; }
+        .sample-table th { background-color: #f1f5f9; font-weight: bold; text-align: left; }
+        /* アニメーション */
+        @keyframes subtle-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .animate-subtle { animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans leading-relaxed selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 bg-brand-500 text-slate-900 rounded-xl flex items-center justify-center font-black text-xl shadow">見</span>
+                <div>
+                    <span class="font-black text-lg tracking-tight block leading-none">公的書類 見本解読マスター</span>
+                    <span class="text-[10px] text-brand-400 font-bold tracking-wider">原戸籍・家督相続・隠居・附票・住民票 全サンプル完備</span>
+                </div>
+            </div>
+            <a href="#sample-viewer" class="bg-brand-500 hover:bg-brand-600 text-slate-900 font-black text-xs md:text-sm px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-play"></i> 体感デモを試す
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-18 px-4 border-b border-slate-700 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-flex items-center gap-2 bg-brand-500/20 border border-brand-500/40 text-brand-300 font-bold text-xs px-3.5 py-1.5 rounded-full mb-6">
+                <i class="fa-solid fa-graduation-cap text-amber-400"></i> 家督相続・隠居・明治戸籍から附票・住民票まで完全網羅！
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black leading-tight mb-6 tracking-tight">
+                公的書類の<span class="text-brand-400 underline decoration-wavy decoration-brand-500/50">「リアル見本サンプル」</span>で<br class="hidden md:block">
+                相続人調査の仕組みが一瞬でわかる！
+            </h1>
+            <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-8">
+                「原戸籍の家督相続ってどう書かれている？」「隠居したら戸籍はどうなる？」「登記の住所が繋がらない！」<br>
+                実実務で直面する疑問を、実物そっくりのサンプル見本を切り替えながら確認できます。
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-3 text-xs md:text-sm font-bold">
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-scroll text-amber-400"></i> 明治・大正・昭和の原戸籍
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-users text-emerald-400"></i> 家督相続・隠居の記載箇所
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-slate-200">
+                    <i class="fa-solid fa-route text-blue-400"></i> 附票と住民票（除票）の繋がり
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN SAMPLE VIEWER -->
+    <section id="sample-viewer" class="py-12 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-8">
+            <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full">Interactive Viewer</span>
+            <h2 class="text-2xl md:text-4xl font-black text-slate-900 mt-2 mb-2">
+                書類タイプ別 見本サンプルデモ
+            </h2>
+            <p class="text-slate-600 text-xs md:text-sm">見たい書類のタブを切り替えて、実際のフォーマットと解読ポイントを比較してください。</p>
+        </div>
+
+        <!-- TABS -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="sample-tabs">
+            <button onclick="switchSample('hara')" id="tab-hara" class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-brand-500 text-slate-900 border-brand-500">
+                <i class="fa-solid fa-scroll"></i> 改製原戸籍 (家督相続・隠居)
+            </button>
+            <button onclick="switchSample('genzai')" id="tab-genzai" class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-white text-slate-700 border-slate-300 hover:border-brand-500">
+                <i class="fa-solid fa-file-code"></i> 現在戸籍 (平成電算化)
+            </button>
+            <button onclick="switchSample('joseki')" id="tab-joseki" class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-white text-slate-700 border-slate-300 hover:border-brand-500">
+                <i class="fa-solid fa-user-slash"></i> 除籍謄本 (全員除籍)
+            </button>
+            <button onclick="switchSample('fuhyo')" id="tab-fuhyo" class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-white text-slate-700 border-slate-300 hover:border-brand-500">
+                <i class="fa-solid fa-route"></i> 戸籍の附票 (住所履歴)
+            </button>
+            <button onclick="switchSample('juminhyo')" id="tab-juminhyo" class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-white text-slate-700 border-slate-300 hover:border-brand-500">
+                <i class="fa-solid fa-address-card"></i> 住民票 (除票)
+            </button>
+        </div>
+
+        <!-- VIEWER AREA -->
+        <div class="grid lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT: SAMPLE DISPLAY -->
+            <div class="lg:col-span-7 bg-white rounded-2xl p-4 md:p-6 border-2 border-slate-300 shadow-xl relative select-none min-h-[520px]">
+                
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <span id="sample-title-badge" class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-md border border-amber-300">
+                        旧様式・縦書き（手書き風）
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono">※見本サンプルイメージ</span>
+                </div>
+
+                <!-- DYNAMIC SAMPLE CONTAINER -->
+                <div id="sample-content-box" class="font-sans">
+                    <!-- JSで書き換わります -->
+                </div>
+
+            </div>
+
+            <!-- RIGHT: EXPLANATION PANEL -->
+            <div class="lg:col-span-5 bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-xl min-h-[520px] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span id="exp-badge" class="bg-amber-400 text-slate-900 text-xs font-black px-3 py-1 rounded-full">
+                            特徴とポイント
+                        </span>
+                        <span id="exp-subbadge" class="text-slate-400 text-xs font-bold">解読解説</span>
+                    </div>
+
+                    <h3 id="exp-title" class="text-xl md:text-2xl font-black text-white mb-3">
+                        改製原戸籍（家督相続・隠居）
+                    </h3>
+
+                    <p id="exp-summary" class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        旧民法（明治〜昭和22年）時代で作られた旧戸籍。家督相続や隠居といった歴史的記載が残る、遡り調査の心臓部です。
+                    </p>
+
+                    <div class="border-t border-slate-800 pt-4">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">実務での注目チェックポイント：</h4>
+                        <ul id="exp-points" class="space-y-2 text-xs text-slate-300">
+                            <!-- JSで挿入 -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                    <span>💡 上のタブで他の書類サンプルに切替</span>
+                    <i class="fa-solid fa-file-contract text-brand-400 text-base"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION: 実務用語の直訳 -->
+    <section class="py-12 bg-slate-200/60 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-8">
+                <h3 class="text-xl md:text-2xl font-black text-slate-900 mb-2">一目でわかる！旧戸籍用語の「直訳」</h3>
+                <p class="text-xs text-slate-600">明治・大正期の戸籍解読で引っかかりやすい用語の日常語翻訳です。</p>
+            </div>
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
+                    <strong class="text-brand-600 block mb-1">【家督相続】</strong>
+                    前戸主の「家」と財産の権利を新戸主がまるごと継ぐこと（生前・死亡両方あり）。
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
+                    <strong class="text-brand-600 block mb-1">【隠居】</strong>
+                    戸主が生きているうちに「引退」して、次の跡継ぎに戸主の権利を譲ること。
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
+                    <strong class="text-brand-600 block mb-1">【分籍】</strong>
+                    親の戸籍から独立して、自分で新しく単独の戸籍を作ること。
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
+                    <strong class="text-brand-600 block mb-1">【転籍】</strong>
+                    戸籍メンバーはそのままで、本籍地（住所）だけを別の場所へお引越しすること。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4 text-center border-t border-slate-800 text-sm">
+        <div class="max-w-4xl mx-auto space-y-2">
+            <p class="font-bold text-white">公的書類 見本解読マスターガイド</p>
+            <p class="text-xs text-slate-500">※ 当サイトの見本サンプルは実際の公的書類様式を基にした解説用イメージです。</p>
+            <p class="text-xs text-slate-600">&copy; Koseki Sample Master Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        const sampleData = {
+            // 1. 改製原戸籍（家督相続・隠居）
+            hara: {
+                badge: '旧様式・縦書き（手書き風）',
+                title: '① 改製原戸籍（家督相続・隠居入り）',
+                summary: '旧民法（明治〜昭和22年）で作られた手書き縦書きの戸籍。死亡だけでなく「隠居」による生前家督相続の痕跡が残ります。',
+                points: [
+                    '・【戸主トナリタル原因】欄に「隠居ニ付家督相続」などの発生理由が明記される',
+                    '・隠居した前戸主（おじいちゃん）は「隠居者」としてそのまま家族欄に残るため生存確認に注意！',
+                    '・前戸主との関係欄（二男、長男など）から家系図を出生まで正確に遡れる'
+                ],
+                html: `
+                    <div class="border-2 border-slate-800 p-4 rounded koseki-paper font-mincho text-xs relative">
+                        <div class="absolute top-3 right-3 hanko-stamp">昭和30年改製</div>
+                        <div class="text-center border-b-2 border-slate-800 pb-2 mb-3">
+                            <span class="text-[10px] font-sans bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold mr-1">明治31年/大正4年式様式</span>
+                            <h4 class="text-base font-bold text-slate-900 tracking-widest inline">昭和改製原戸籍謄本</h4>
+                        </div>
+                        <div class="border-b border-slate-400 pb-2 mb-2">
+                            <div>本籍：東京都千代田区麹町一丁目1番地</div>
+                            <div class="font-bold text-sm">戸主：山田 次郎</div>
+                            <div class="text-[11px] bg-amber-100 p-1.5 rounded mt-1 border border-amber-300">
+                                <strong>【戸主トナリタル原因及年月日】</strong><br>
+                                昭和15年5月10日 前戸主山田太郎<strong>隠居</strong>ニ付家督相続
+                            </div>
+                        </div>
+                        <div class="border border-slate-400 p-2 mb-2 bg-amber-50/50">
+                            <div class="font-bold text-amber-900">【家族】 山田 太郎 （前戸主・隠居者）</div>
+                            <div>明治20年4月1日出生</div>
+                            <div class="text-red-700">昭和25年10月10日 死亡届出</div>
+                        </div>
+                        <div class="border border-slate-400 p-2 bg-emerald-50/50">
+                            <div class="font-bold">【家族】 山田 花子 （戸主妻）</div>
+                            <div>昭和2年8月15日出生 / 鈴木一郎二女</div>
+                            <div class="text-emerald-800 font-bold mt-1">【従前戸籍】神奈川県横浜市中区 鈴木次郎戸籍</div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 2. 現在戸籍
+            genzai: {
+                badge: '横書き・電算化（現代）',
+                title: '② 現在戸籍（全部事項証明書）',
+                summary: '平成の電算化（システム化）によって作られた最新の戸籍。パソコン文字で横書き印刷されており、一番読みやすい形式です。',
+                points: [
+                    '・【本籍・筆頭者】が最上部に記載される',
+                    '・婚姻前の過去の履歴や死亡除籍された人は【記載が省略】されることがある',
+                    '・従前戸籍の記載欄から、1つ前の改製原戸籍へ遡ることができる'
+                ],
+                html: `
+                    <div class="border-2 border-slate-700 p-4 rounded bg-white font-sans text-xs">
+                        <div class="text-center border-b-2 border-slate-800 pb-2 mb-3">
+                            <h4 class="text-base font-bold text-slate-900 tracking-wider">戸籍全部事項証明書（戸籍謄本）</h4>
+                        </div>
+                        <div class="bg-slate-50 p-2.5 rounded border border-slate-200 mb-3 space-y-1">
+                            <div><strong>【本籍】</strong> 東京都千代田区麹町一丁目1番地</div>
+                            <div><strong>【筆頭者】</strong> 山田 次郎</div>
+                        </div>
+                        <div class="border border-slate-300 p-2.5 rounded mb-2 bg-emerald-50/50">
+                            <div class="font-bold text-slate-800 border-b pb-1 mb-1">【名】 山田 次郎 （夫）</div>
+                            <div>生年月日：昭和50年1月1日</div>
+                            <div>配偶者区分：妻 山田花子</div>
+                        </div>
+                        <div class="border border-slate-300 p-2.5 rounded bg-blue-50/50">
+                            <div class="font-bold text-slate-800 border-b pb-1 mb-1">【名】 山田 花子 （妻）</div>
+                            <div>生年月日：昭和53年8月15日</div>
+                            <div>従前戸籍：神奈川県横浜市中区本町二丁目5番地 鈴木次郎</div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 3. 除籍謄本
+            joseki: {
+                badge: '全員除籍（空っぽ状態）',
+                title: '③ 除籍謄本（じょせきとうほん）',
+                summary: '結婚・死亡・転籍などにより、その戸籍に入っていたメンバー全員がいなくなって「空（から）」になった状態の戸籍です。',
+                points: [
+                    '・全員が除籍されているため、書類の一番上に大きく【除籍】のスタンプが押される',
+                    '・被相続人が死亡し、最後の戸籍から誰もいなくなった際にこの状態になる',
+                    '・保存期間は150年となっており、過去の完全な系譜を証明する'
+                ],
+                html: `
+                    <div class="border-2 border-red-800 p-4 rounded bg-red-50/20 font-sans text-xs relative">
+                        <div class="absolute top-2 left-2 border-2 border-red-600 text-red-600 font-black px-2 py-0.5 rounded text-sm transform -rotate-6">除 籍</div>
+                        <div class="text-center border-b-2 border-slate-800 pb-2 mb-3 pt-4">
+                            <h4 class="text-base font-bold text-slate-900 tracking-wider">除 籍 謄 本</h4>
+                        </div>
+                        <div class="bg-white p-2 rounded border border-slate-300 mb-2">
+                            <div>本籍：東京都千代田区麹町一丁目1番地</div>
+                            <div>筆頭者：山田 次郎</div>
+                        </div>
+                        <div class="border border-red-300 p-2 rounded bg-white batsu-overlay mb-2">
+                            <div class="font-bold text-red-600">【名】 山田 次郎 （除籍）</div>
+                            <div>令和5年10月10日 死亡届出により除籍</div>
+                        </div>
+                        <div class="border border-red-300 p-2 rounded bg-white batsu-overlay">
+                            <div class="font-bold text-red-600">【名】 山田 花子 （除籍）</div>
+                            <div>令和6年2月1日 転籍により除籍</div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 4. 戸籍の附票
+            fuhyo: {
+                badge: '本籍地で管理・住所の履歴',
+                title: '④ 戸籍の附票（ふひょう）',
+                summary: 'その戸籍が作られてから現在までの「住所の引越し履歴」が一覧で記録された書類。不動産登記の住所繋がり証明に威力を発揮します。',
+                points: [
+                    '・【本籍地の役所】で取得できる（住民票とは発行場所が違う）',
+                    '・その本籍地にいる間に引っ越した【すべての住所履歴】が順番に載る',
+                    '・不動産の名義（登記簿上の住所）から死亡時の住所までを一発で繋ぐことができる'
+                ],
+                html: `
+                    <div class="border-2 border-amber-600 p-4 rounded bg-amber-50/20 font-sans text-xs">
+                        <div class="text-center border-b-2 border-amber-700 pb-2 mb-3">
+                            <h4 class="text-base font-bold text-slate-900">戸 籍 の 附 票 の 写 し</h4>
+                        </div>
+                        <div class="mb-3 text-[11px]">
+                            <div>本籍：東京都千代田区麹町一丁目1番地</div>
+                            <div>筆頭者：山田 次郎</div>
+                        </div>
+                        <table class="sample-table bg-white">
+                            <thead>
+                                <tr>
+                                    <th style="width: 28%;">記録年月日</th>
+                                    <th>住所（引越し履歴の繋がり）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>平成15年4月1日</td>
+                                    <td>東京都千代田区麹町1-1 （編製時住所）</td>
+                                </tr>
+                                <tr>
+                                    <td>平成22年8月10日</td>
+                                    <td>神奈川県横浜市中区本町2-5-1</td>
+                                </tr>
+                                <tr class="bg-amber-100/60 font-bold">
+                                    <td>令和2年11月5日</td>
+                                    <td>大阪府大阪市北区梅田3-1-1 （現在住所）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            },
+
+            // 5. 住民票（除票）
+            juminhyo: {
+                badge: '居住地で管理・現住所の証明',
+                title: '⑤ 住民票（除票）',
+                summary: '実際に「住んでいる場所」を証明する書類。死亡したり他市区町村へ引っ越すと「住民票の除票」となります。',
+                points: [
+                    '・【実際の居住地の役所】で取得する',
+                    '・【前住地（1つ前の住所）】しか載らないため、何回も引越している場合は遡りが大変',
+                    '・住民票の除票には「死亡年月日」や「マイナンバー（記載選択可）」が載る'
+                ],
+                html: `
+                    <div class="border-2 border-blue-600 p-4 rounded bg-blue-50/20 font-sans text-xs">
+                        <div class="text-center border-b-2 border-blue-700 pb-2 mb-3">
+                            <h4 class="text-base font-bold text-slate-900">住 民 票 の 除 票 の 写 し</h4>
+                        </div>
+                        <table class="sample-table bg-white">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 25%;">氏名</th>
+                                    <td class="font-bold">山田 次郎</td>
+                                </tr>
+                                <tr>
+                                    <th>住所</th>
+                                    <td>大阪府大阪市北区梅田三丁目1番1号</td>
+                                </tr>
+                                <tr>
+                                    <th>前住所</th>
+                                    <td>神奈川県横浜市中区本町二丁目5番1号</td>
+                                </tr>
+                                <tr>
+                                    <th>本籍地</th>
+                                    <td>東京都千代田区麹町一丁目1番地</td>
+                                </tr>
+                                <tr class="bg-red-50 text-red-700">
+                                    <th>消除の事由</th>
+                                    <td>令和5年10月10日 死亡（令和5年10月15日 消除）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            }
+        };
+
+        // 見本タブ切替関数
+        function switchSample(typeKey) {
+            const data = sampleData[typeKey];
+            if (!data) return;
+
+            // タブボタンのCSS切り替え
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-white text-slate-700 border-slate-300 hover:border-brand-500';
+            });
+            const activeTab = document.getElementById('tab-' + typeKey);
+            if (activeTab) {
+                activeTab.className = 'tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold border transition flex items-center gap-2 shadow-sm bg-brand-500 text-slate-900 border-brand-500';
+            }
+
+            // 見本サンプル描画
+            document.getElementById('sample-title-badge').innerText = data.badge;
+            document.getElementById('sample-content-box').innerHTML = data.html;
+
+            // 解説パネル描画
+            document.getElementById('exp-title').innerText = data.title;
+            document.getElementById('exp-summary').innerText = data.summary;
+
+            const pointsList = document.getElementById('exp-points');
+            pointsList.innerHTML = data.points.map(pt => `<li>${pt}</li>`).join('');
+        }
+
+        // 初期表示（一番重要な改製原戸籍）
+        window.addEventListener('DOMContentLoaded', () => {
+            switchSample('hara');
+        });
+    </script>
+</body>
+</html>
